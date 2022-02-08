@@ -1,0 +1,58 @@
+
+<div class="sign-in">
+    <div class="container">
+        <div class="sign-in-inner">
+            <div class="sign-in-heading">
+                <h2>Sign in to Gogtas</h2>
+            </div>
+            <form action="/login" method="post" class="needs-validation" novalidate>
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Email</label>
+                    <input type="email" name="username" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" required/>
+                    <div class="invalid-feedback">
+                        Please enter a username.
+                      </div>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">Password</label>
+                    <input type="password" name="password" class="form-control" id="exampleInputPassword1" required/>
+                    <div class="invalid-feedback">
+                        Please enter a password.
+                      </div>
+                    <a class="fp" href="#">Forgot password?</a>
+                    <% if(messages.error){ %>
+                      <div style="color: #cd3545;">
+                      <%= messages.error %>
+                    </div>
+                    <% } %>
+                </div>
+                <div class="sign-in-btn"><button type="submit" class="btn btn-primary">Sign In</button></div>
+            </form>
+            <p>Don’t have an account? <a href="#">Sign up</a></p>
+        </div>
+    </div>
+</div>
+<script>
+    (function () {
+  'use strict'
+
+  // Fetch all the forms we want to apply custom Bootstrap validation styles to
+  var forms = document.querySelectorAll('.needs-validation')
+
+  // Loop over them and prevent submission
+  Array.prototype.slice.call(forms)
+    .forEach(function (form) {
+      form.addEventListener('submit', function (event) {
+        if (!form.checkValidity()) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+
+        form.classList.add('was-validated')
+      }, false)
+    })
+})()
+
+</script>
+
+    

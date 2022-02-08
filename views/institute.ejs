@@ -1,0 +1,567 @@
+<div class="sb__sec">
+  <div class="sb__sec__btn">
+    <a id="addInstituteBtn" class="btn btn-primary addIns">Add Institute</a>
+  </div>
+</div>
+
+<table id="institute-table" class="display" style="width:100%">
+  <thead>
+    <tr>
+      <th class="t-institute">Institute Name</th>
+      <th class="t-domin">Domain</th>
+      <th class="t-city">City</th>
+      <th class="t-status">Status</th>
+      <th class="t-action">Action</th>
+    </tr>
+  </thead>
+  <tbody id="tableBody">
+    <% for(var x=0 ; x<institutes.length ; x++){ %>
+    <tr id="row-<%= institutes[x].id %>">
+      <td class="t-institute"><%= institutes[x].institute_name %></td>
+      <td class="t-domin"><%= institutes[x].domain %></td>
+      <td class="t-city"><%= institutes[x].city %></td>
+      <td class="t-status">
+        <% if(institutes[x].status) {%>
+          <a class="status-item status-item--active" id="status-<%= institutes[x].id %>"></a>
+        <% }else { %>
+          <a class="status-item" id="status-<%= institutes[x].id %>"></a>
+        <% } %>
+      </td>
+      <td class="t-action">
+        <a class="t-action-view" id="view-<%= institutes[x].id %>">
+          <span class="icon-eye"></span></a>
+        <a class="t-action-edit" id="edited-<%= institutes[x].id %>">
+          <span class="icon-edit"></span></a>
+        <a class="t-action-trash" id="delete-<%= institutes[x].id %>">
+          <span class="icon-trash"></span></a>
+      </td>
+    </tr>
+    <% } %>
+  </tbody>
+  <tfoot>
+    <tr>
+      <th class="t-institute">Institute Name</th>
+      <th class="t-domin">Domin</th>
+      <th class="t-city">City</th>
+      <th class="t-status">Status</th>
+      <th class="t-action">Action</th>
+    </tr>
+  </tfoot>
+</table>
+  <div class="add-institute-empty-inner" id="emptyInstitutes">
+    <div class="img-inner">
+        <img src="assets/images/add-institute-img.png" alt="">
+
+        <h3>Add Institute</h3>
+        <p>Lorem ipsum is placeholder text commonly used in the <br> graphic, print, and publishing industrie.</p>
+    </div>
+</div>
+<form class="from" id="addInstituteForm"  hidden>
+  <input type="hidden" id="instituteId">
+  <div class="from-inner">
+    <div class="row">
+      <div class="col-lg-6">
+        <label class="form-label" for="firstname">First Name</label>
+        <input type="text" class="form-control invalid" data-provide="typeahead" id="firstname" placeholder="First Name" >
+        <div class="invalid-feedback">
+          Please enter firstname.
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <label class="form-label">Last Name</label>
+        <input id="lastname" class="form-control" type="text" placeholder="Last Name"  >
+        <div class="invalid-feedback">
+          Please enter lastname.
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <label class="form-label">Institute Name</label>
+        <input type="text" class="form-control" data-provide="typeahead" id="instituteName" placeholder="Institute Name"  >
+        <div class="invalid-feedback">
+          Please enter Institute name.
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <label class="form-label">Domin Name</label>
+        <input type="text" class="form-control" data-provide="typeahead" id="domain" placeholder="Domin Name"  >
+        <div class="invalid-feedback" id="domainFeedback">
+          Please enter Domain name.
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <label class="form-label">Email</label>
+        <input id="email" class="form-control" type="email" placeholder="Email" >
+        <div class="invalid-feedback" >
+          Please enter email.
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <label class="form-label">Confirm email</label>
+        <input id="confirmEmail" class="form-control" type="email" placeholder="Confirm email" >
+        <div class="invalid-feedback">
+          Please enter same email.
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <label class="form-label">City</label>
+        <input id="city" class="form-control" type="text" placeholder="City" >
+        <div class="invalid-feedback">
+          Please enter city.
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <label class="form-label">State</label>
+        <input type="text" class="form-control" data-provide="typeahead" id="state" placeholder="State" >
+        <div class="invalid-feedback">
+          Please enter State.
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <label class="form-label">Address1</label>
+        <input type="text" class="form-control" data-provide="typeahead" id="address1" placeholder="Address1" >
+        <div class="invalid-feedback">
+          Please enter Address.
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <label class="form-label" for="address2">Address2</label>
+        <input type="text" class="form-control" data-provide="typeahead" id="address2" placeholder="Address2" >
+      </div>
+      <div class="col-lg-6">
+        <label class="form-label" for="zipcode">Zip Code</label>
+        <input type="text" class="form-control" data-provide="typeahead" id="zipcode" placeholder="Zip Code" >
+        <div class="invalid-feedback">
+          Please enter zipcode.
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <label class="form-label">Country</label>
+        <input type="text" class="form-control" data-provide="typeahead" id="country" placeholder="Country" >
+        <div class="invalid-feedback">
+          Please enter country.
+        </div>
+      </div>
+    </div>
+
+    <div class="form-btn">
+      <button type="submit" id="submitForm" class="btn btn-primary">Add Institute</button>
+    </div>
+  </div>
+</form>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script>     
+  $(document).ready(function() {
+    
+      $('#institute-table').DataTable( {
+          "dom": '<"top"f>rt<"bottom"lp><"clear">',
+          language: {
+              search: "_INPUT_",
+              searchPlaceholder: "Search"
+          }
+      } );
+
+      let institutesCount = "<%= institutes.length %> "
+      if(Number(institutesCount) > 0){
+        $("#emptyInstitutes").hide();
+      }else{
+        $('#institute-table').parents('div.dataTables_wrapper').first().hide();
+      }
+  } );
+  var thisDomain = ""
+  const validateEmail = (email) =>{
+    return email.match(
+      /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    );
+  };
+
+
+
+  function checkDomain(){
+    let val = $("#domain").val();
+    val = val.replace("http://", "");
+    val = val.replace("www.", "");
+    var reg = /^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9]\.[a-zA-Z]{2,}$/;
+    if(val == "" || !reg.test(val)){
+      $("#domain").addClass("is-invalid")
+      $("#domain").removeClass("is-valid");
+      $("#domainFeedback").html("Please enter domain name.")
+      return false;
+    }else{
+      return $.get("/institute/exist/"+val).done((data)=>{
+        if(data.institute.length){
+          $("#domain").addClass("is-invalid")
+          $("#domain").removeClass("is-valid");
+          $("#domainFeedback").html("Domain already exist.")
+          return false;
+        }else{
+          $("#domain").addClass("is-valid")
+          $("#domain").removeClass("is-invalid");
+          return true;
+        }
+      })
+    }
+  }
+
+  function checkEmail(){
+    let email = $("#email")
+    let confirmEmail = $("#confirmEmail");
+    let emailCheck = validateEmail(email.val());
+    if(emailCheck){
+      email.addClass("is-valid");
+      email.removeClass("is-invalid");
+      if(email.val() === confirmEmail.val()){
+        confirmEmail.addClass("is-valid");
+        confirmEmail.removeClass("is-invalid");
+        return true;
+      }else{
+        confirmEmail.addClass("is-invalid");
+        confirmEmail.removeClass("is-valid");
+        return false;
+      }
+    }else{
+      email.addClass("is-invalid");
+      email.removeClass("is-valid");
+      return false;
+    }
+  }
+
+  $("#domain").blur(function (){
+    let ele = $(this)
+    let val = ele.val();
+    let update = $("#submitForm").hasClass("Update");
+    if(val == ""){
+      ele.addClass("is-invalid")
+        ele.removeClass("is-valid");
+        $("#domainFeedback").html("Please enter domain name.")
+        return;
+    }
+    if(update && thisDomain == val){
+      return;
+    }
+    $.get("/institute/exist/"+val).done((data)=>{
+      if(data.institute.length){
+        ele.addClass("is-invalid")
+        ele.removeClass("is-valid");
+        $("#domainFeedback").html("Domain already exist.")
+      }else{
+        ele.addClass("is-valid")
+        ele.removeClass("is-invalid")
+      }
+    })
+  })
+
+  $("#confirmEmail").keyup(function (){
+    let ele = $(this);
+    let val = $(this).val();
+    let email = $("#email").val();
+    if(val === email && email != ""){
+      $(this).addClass("is-valid");
+      $(this).removeClass("is-invalid")
+    }else{
+      $(this).addClass("is-invalid");
+      $(this).removeClass("is-valid")
+    }
+  })
+  
+  $("body").on("click",".status-item",function(){
+      var thisRadio = $(this);
+      let instituteId = this.id.split("-")[1];
+      if(thisRadio.hasClass("status-item--active")){
+          $.post("/institute/changeStatus",{id:instituteId,status:false}).done(()=>{$.alert({title: 'Status changed!',
+          content: 'Status changed from activate to deactivate.',
+          type: 'orange',
+          typeAnizmated: true})})
+          thisRadio.removeClass("status-item--active")
+      }
+      else{
+        $.post("/institute/changeStatus",{id:instituteId,status:true}).done(()=>{$.alert({title: 'Status changed!',
+          content: 'Status changed from deactivate to activate.',
+          type: 'orange',
+          typeAnizmated: true})})
+          thisRadio.addClass("status-item--active")
+      }
+  })
+
+  $("#addInstituteBtn").click(function (){
+      $("#submitForm").removeClass("Update");
+      $("#submitForm").html("Add Institute");
+      $("input[type=text]").val("");
+      if($(this).hasClass("addIns")){
+          $("#addInstituteForm").attr("hidden",false);
+          $('#institute-table').parents('div.dataTables_wrapper').first().hide();
+          $("#emptyInstitutes").hide();
+          $(this).removeClass("addIns");
+          $(this).html("View Institutes")
+      }else{
+          $.get("/institute/getCount").done((data)=>{
+            if(data.institutesCount != 0){
+              $("#emptyInstitutes").hide();
+            }else{
+              $("#emptyInstitutes").show();
+            }
+          })
+          $("#addInstituteForm").attr("hidden",true);
+          $('#institute-table').parents('div.dataTables_wrapper').first().show();
+          $(this).addClass("addIns");
+          $(this).html("Add Institute");
+      }
+  })
+
+  function checkEmpty(ele){
+    if(ele.val() == ""){
+      ele.addClass("is-invalid");
+      ele.removeClass("is-valid");
+      return false;
+    }else{
+      ele.addClass("is-valid");
+      ele.removeClass("is-invalid");
+      return true;
+    }
+  }
+
+  $("#firstname").keyup(function (){
+    let ele = $(this);
+    checkEmpty(ele);
+  })
+
+  $("#lastname").keyup(function (){
+    let ele = $(this);
+    checkEmpty(ele);
+  })
+  
+  $("#instituteName").keyup(function (){
+    let ele = $(this);
+    checkEmpty(ele);
+  })
+  $("#domain").keyup(function (){
+    let ele = $(this);
+    checkDomain();
+  })
+
+  $("#email").keyup(function(){
+    let ele = $(this);
+    let check = validateEmail(ele.val());
+    if(check){
+      ele.addClass("is-valid");
+      ele.removeClass("is-invalid");
+    }else{
+      ele.addClass("is-invalid");
+      ele.removeClass("is-valid");
+    }
+  })
+
+  $("#city").keyup(function (){
+    let ele = $(this);
+    checkEmpty(ele);
+  })
+  $("#state").keyup(function (){
+    let ele = $(this);
+    checkEmpty(ele);
+  })
+
+  $("#address1").keyup(function (){
+    let ele = $(this);
+    checkEmpty(ele);
+  })
+  $("#zipcode").keyup(function (){
+    let ele = $(this);
+    checkEmpty(ele);
+  })
+  $("#country").keyup(function (){
+    let ele = $(this);
+    checkEmpty(ele);
+  })
+
+  $("#addInstituteForm").submit((e)=>{  
+      e.preventDefault();
+      e.stopPropagation();
+        let datatable = $('#institute-table').DataTable(); 
+        var formData = {}
+        let firstname = $("#firstname"), 
+            lastname = $("#lastname"),
+            instituteName = $("#instituteName"),
+            domain = $("#domain"),
+            email = $("#email"),
+            city = $("#city"),
+            state = $("#state"),
+            address1  = $("#address1"),
+            zipcode = $("#zipcode"),
+            country = $("#country")
+        if(!checkEmpty(firstname) ||
+            !checkEmpty(lastname)||
+            !checkEmpty(instituteName)||
+            !checkEmail()||
+            !checkEmpty(city)||
+            !checkEmpty(state)||
+            !checkEmpty(address1)||
+            !checkEmpty(zipcode)||
+            !checkEmpty(country)){
+              return;
+            }else{
+              let update = $("#submitForm").hasClass("Update");
+              formData.firstname = $("#firstname").val();
+              formData.lastname = $("#lastname").val();
+              formData.instituteName = $("#instituteName").val();
+              formData.domain = $("#domain").val();
+              formData.email = $("#email").val();
+              formData.city = $("#city").val();
+              formData.state = $("#state").val();
+              formData.address1 = $("#address1").val();
+              formData.address2 = $("#address2").val();
+              formData.zipcode = $("#zipcode").val();
+              formData.country = $("#country").val();
+              if(!update){
+                if(!checkDomain()){
+                  return;
+                }
+                $.post("/institute/add",formData)
+                .done((data)=>{
+                    datatable.destroy();
+                    let message = data.message;
+                    let institute = data.data;
+                    let row = `<tr>
+                                <td class="t-institute">${institute[0].institute_name}</td>
+                                <td class="t-domin">${institute[0].domain}</td>
+                                <td class="t-city">${institute[0].city}</td>
+                                <td class="t-status">
+                                    <a class="status-item status-item--active" id="status-${institute[0].id}"></a>
+                                </td>
+                                <td class="t-action">
+                                  <a href="#" class="t-action-view" d="view-${institute[0].id}">
+                                    <span class="icon-eye"></span></a>
+                                  <a href="#" class="t-action-edit" id="edited-${institute[0].id}">
+                                    <span class="icon-edit"></span></a>
+                                  <a class="t-action-trash" id="delete-${institute[0].id}">
+                                    <span class="icon-trash"></span></a>
+                                </td>
+                              </tr>`
+                    $("#tableBody").append(row);
+                    $('#institute-table').DataTable( {
+                        "dom": '<"top"f>rt<"bottom"lp><"clear">',
+                        language: {
+                            search: "_INPUT_",
+                            searchPlaceholder: "Search"
+                        }
+                    } );
+                    $.alert({title: 'Added!',
+                            content: 'Institute added successfully.',
+                            type: 'green',
+                            typeAnizmated: true})
+                    $("#addInstituteForm").attr("hidden",true);
+                    $('#institute-table').parents('div.dataTables_wrapper').first().show();
+                    $("#addInstituteBtn").addClass("addIns");
+                    $("#addInstituteBtn").html("Add Institute");
+                    $("input[type=text]").val("");
+                }).fail((err)=>{
+                    console.log(err);
+                    $("#validationError").html("Something went wrong.");
+                })
+              }else{
+                let instituteId = $("#instituteId").val();
+                formData.id = instituteId;
+                $.post("/institute/update",formData)
+                .done((data)=>{
+                    datatable.destroy();
+                    let td = $("#edited-"+instituteId);
+                    td.closest("tr")[0].remove();
+                    let message = data.message;
+                    let institute = data.data;
+                    let row = `<tr>
+                                <td class="t-institute">${institute[0].institute_name}</td>
+                                <td class="t-domin">${institute[0].domain}</td>
+                                <td class="t-city">${institute[0].city}</td>
+                                <td class="t-status">
+                                    <a class="status-item status-item--active" id="status-${institute[0].id}"></a>
+                                </td>
+                                <td class="t-action">
+                                  <a href="#" class="t-action-view" id="view-${institute[0].id}">
+                                    <span class="icon-eye"></span></a>
+                                  <a href="#" class="t-action-edit" id="edited-${institute[0].id}">
+                                    <span class="icon-edit"></span></a>
+                                  <a class="t-action-trash" id="delete-${institute[0].id}">
+                                    <span class="icon-trash"></span></a>
+                                </td>
+                              </tr>`
+                    $("#tableBody").append(row);
+                    $('#institute-table').DataTable( {
+                        "dom": '<"top"f>rt<"bottom"lp><"clear">',
+                        language: {
+                            search: "_INPUT_",
+                            searchPlaceholder: "Search"
+                        }
+                    } );
+                    $.alert({title: 'Added!',
+                            content: 'Institute updated successfully.',
+                            type: 'green',
+                            typeAnizmated: true})
+                    $("#addInstituteForm").attr("hidden",true);
+                    $('#institute-table').parents('div.dataTables_wrapper').first().show();
+                    $("#addInstituteBtn").addClass("addIns");
+                    $("#addInstituteBtn").html("Add Institute");
+                    $("input[type=text]").val("");
+                }).fail((err)=>{
+                    console.log(err);
+                    $("#validationError").html("Something went wrong.");
+                })
+              }
+            }
+          })
+
+      $("body").on("click",".t-action-trash",function(){
+        let row = $(this).closest("tr")[0]
+        let instituteId = this.id.split("-")[1];
+        $.confirm({
+          title: 'Confirm!',
+          type:"red",
+          content: 'Are you sure you want to delete this institute!',
+          buttons: {
+              confirm: function () {
+                  $('#institute-table').DataTable().destroy();
+                  $.post("/institute/delete",{id:instituteId}).done(()=>{
+                   row.remove(); 
+                    $('#institute-table').DataTable( {
+                        "dom": '<"top"f>rt<"bottom"lp><"clear">',
+                        language: {
+                            search: "_INPUT_",
+                            searchPlaceholder: "Search"
+                        }
+                    } );
+                  })
+              },
+              cancel: function () {
+              }
+          }
+      });
+    })
+
+    $("body").on("click",".t-action-edit",function (){
+      $("#submitForm").addClass("Update");
+      $("#submitForm").html("Update");
+      let row = $(this).closest("tr")[0];
+      let instituteId = this.id.split("-")[1];
+      $("#instituteId").val(instituteId);
+      $.post("/institute/get",{id:instituteId}).done((data)=>{
+        let institute = data.institute[0];
+          $("#firstname").val(institute.firstname);
+          $("#lastname").val(institute.lastname);
+          $("#instituteName").val(institute.institute_name);
+          $("#domain").val(institute.domain);
+          thisDomain = institute.domain;
+          $("#email").val(institute.email);
+          $("#city").val(institute.city);
+          $("#state").val(institute.state);
+          $("#address1").val(institute.address1);
+          $("#address2").val(institute.address2);
+          $("#zipcode").val(institute.zipcode);
+          $("#country").val(institute.country);
+      })
+      $("#addInstituteForm").attr("hidden",false);
+      $('#institute-table').parents('div.dataTables_wrapper').first().hide();
+    })
+  
+    $("body").on("click",".t-action-view",function (){
+      let instituteId = this.id.split("-")[1];
+      window.location.replace("/institute/"+instituteId);
+    })
+  </script>

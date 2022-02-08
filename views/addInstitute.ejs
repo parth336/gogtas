@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+</head>
+<body>
+    <h1>Add Institute</h1>
+    
+    <form>
+        <div id="validationError"></div>
+        Firstname: <input type="text" id="firstname"><br>
+        Lastname: <input type="text" id="lastname"><br>
+        Institute name: <input type="text" id="instituteName"><br>
+        Domain: <input type="text" id="domain"><br>
+        Email: <input type="text" id="email"><br>
+        Confirm Email: <input type="text" id="confirmEmail"><br>
+        City: <input type="text" id="city"><br>
+        State: <input type="text" id="state"><br>
+        Address 1: <input type="text" id="address1"><br>
+        Address 2: <input type="text" id="address2"><br>
+        Zip code : <input type="text" id="zipcode"><br>
+        Country : <input type="text" id="country"><br>
+
+        <input type="submit">
+    </form>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script>
+        $("form").submit((e)=>{
+            e.preventDefault();
+            var formData = {};
+            //perform validation and create an object
+            formData.firstname = $("#firstname").val();
+            formData.lastname = $("#lastname").val();
+            formData.instituteName = $("#instituteName").val();
+            formData.domain = $("#domain").val();
+            formData.email = $("#email").val();
+            formData.city = $("#city").val();
+            formData.state = $("#state").val();
+            formData.address1 = $("#address1").val();
+            formData.address2 = $("#address2").val();
+            formData.zipcode = $("#zipcode").val();
+            formData.country = $("#country").val();
+            console.log(formData);
+            $.post("/institute/add",formData)
+            .done((data)=>{
+                let message = data.message;
+                $("#validationError").html(message);
+                $("input[type=text]").val("");
+            }).fail((err)=>{
+                console.log(err);
+                $("#validationError").html("Something went wrong.");
+            })
+        })
+    </script>
+</body>
+</html>
