@@ -23,9 +23,9 @@
       <td class="t-email"><%= users[x].email %></td>
       <td class="t-status">
         <% if(users[x].status) { %>
-          <a class="status-item status-item--active">
+          <a class="status-item status-item--active" id="status-<%= users[x].id %>">
         <% } else { %>
-          <a class="status-item">
+          <a class="status-item" id="status-<%= users[x].id %>">
         <% } %>
         </a>
       </td>
@@ -58,26 +58,28 @@
         </div>
         <div class="modal-body">
           <div class="from-inner">
-            <form class="needs-validation" action="/institute/importUser" method="post" enctype="multipart/form-data">
-                  <div class="row">
-                    <div class="col-lg-12">
-                      <input type="search" class="search" placeholder="Search" aria-controls="institute-table" autocomplete="off">
-                    </div>
-                    <div class="col-lg-12 drop">
-                      <div class="file-drop-area"> 
-                        <h3>Drang & Drop file here to upload</h3>
-                        <p><span>OR</span></p>
-                        <div class="file-input-btn">
-                          <input class="file-input" type="file" accept=".csv" required>
-                        <button type="submit" class="btn btn-primary">Browse files</button>
-                        </div>
-                      </div>
-                    </div>
+            <div class="row">
+              <div class="col-lg-12">
+                <input type="search" class="search" placeholder="Search" aria-controls="institute-table" autocomplete="off">
+              </div>
+              <form action="/institute/uploadUser" enctype="multipart/form-data" id="uploadUserForm">
+              <div class="col-lg-12 drop">
+                <div class="file-drop-area">
+                  <div class="drop-zone__prompt">
+                    <h3>Drang & Drop file here to upload</h3>
+                    <p><span>OR</span></p>
                   </div>
-                </form>
+                    <input class="file-input" type="file" accept=".csv">
+                    <button type="button" class="btn btn-primary mb-3" id="browseBtn">Browse files</button>
                 </div>
-        </div>
-        
+                <div class="row">
+                    <button type="submit" class="btn btn-outline-success mt-3">Import User</button>
+                </div>
+              </form>
+              </div>
+            </div>
+            </div>
+        </div>        
       </div>
     </div>
   </div>
@@ -123,7 +125,80 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
 <script>
+
+
+document.querySelectorAll(".file-input").forEach((inputElement) => {
+  const dropZoneElement = inputElement.closest(".file-drop-area");
+
+  $("#browseBtn").on("click", (e) => {
+    inputElement.click();
+  });
+
+  inputElement.addEventListener("change", (e) => {
+    if (inputElement.files.length) {
+      updateThumbnail(dropZoneElement, inputElement.files[0]);
+    }
+  });
+
+  dropZoneElement.addEventListener("dragover", (e) => {
+    e.preventDefault();
+    dropZoneElement.classList.add("drop-zone--over");
+  });
+
+  ["dragleave", "dragend"].forEach((type) => {
+    dropZoneElement.addEventListener(type, (e) => {
+      dropZoneElement.classList.remove("drop-zone--over");
+    });
+  });
+
+  dropZoneElement.addEventListener("drop", (e) => {
+    e.preventDefault();
+    console.log(e.dataTransfer.files);
+    if (e.dataTransfer.files.length) {
+      inputElement.files = e.dataTransfer.files;
+      updateThumbnail(dropZoneElement, e.dataTransfer.files[0]);
+    }
+
+    dropZoneElement.classList.remove("drop-zone--over");
+  });
+});
+
+/**
+ * Updates the thumbnail on a drop zone element.
+ *
+ * @param {HTMLElement} dropZoneElement
+ * @param {File} file
+ */
+function updateThumbnail(dropZoneElement, file) {
+  console.log(file);
+  let thumbnailElement = dropZoneElement.querySelector(".drop-zone__thumb");  
+
+  // Show thumbnail for image files
+  if (file.type.startsWith("text/csv")) {
+    // First time - remove the prompt
+    if (dropZoneElement.querySelector(".drop-zone__prompt")) {
+      dropZoneElement.querySelector(".drop-zone__prompt").remove();
+    }
+
+    // First time - there is no thumbnail element, so lets create it
+    if (!thumbnailElement) {
+      thumbnailElement = document.createElement("div");
+      thumbnailElement.classList.add("drop-zone__thumb");
+      dropZoneElement.appendChild(thumbnailElement);
+    }
+    
+    thumbnailElement.style.backgroundImage = null;
+    thumbnailElement.dataset.label = file.name;
+  } else {
+    $.alert({title: 'Status changed!',
+          content: 'Please select a valid .csv file.',
+          type: 'orange',
+          typeAnizmated: true});
+  }
+}
   
+
+
    $(document).ready(function() {
     
     $('#users-table').DataTable( {
@@ -147,19 +222,7 @@
     );
   };
 
-    $(document).on('change', '.file-input', function() {
-
-      var filesCount = $(this)[0].files.length;
-
-      var textbox = $(this).prev();
-
-      if (filesCount === 1) {
-        var fileName = $(this).val().split('\\').pop();
-        textbox.text(fileName);
-      } else {
-        textbox.text(filesCount + ' files selected');
-      }
-    });
+    
 
     function checkEmpty(ele){
     if(ele.val() == ""){
@@ -191,8 +254,8 @@
     let lastname = $("#lastname");
     if(checkEmpty(firstName) && checkEmpty(lastname) && checkEmail()){
       let formData = {}
-      var url = window.location.pathname;
-      var id = url.substring(url.lastIndexOf('/') + 1);
+      let url = window.location.pathname;
+      let id = url.substring(url.lastIndexOf('/') + 1);
       formData.firstname = $("#firstname").val();
       formData.lastname = $("#lastname").val();
       formData.email = $("#email").val();
@@ -203,6 +266,54 @@
         window.location.reload();
       })
     }
+  })
+
+  $(".status-item").click(function (){
+    let thisRadio = $(this)
+    
+    let id = this.id.split("-")[1];
+    if(thisRadio.hasClass("status-item--active")){
+      $.post("/institute/user/changeStatus",{id:id,status:false}).done(()=>{$.alert({title: 'Status changed!',
+          content: 'Status changed from activate to deactivate.',
+          type: 'orange',
+          typeAnizmated: true})})
+          thisRadio.removeClass("status-item--active")
+    }else{
+      $.post("/institute/user/changeStatus",{id:id,status:true}).done(()=>{$.alert({title: 'Status changed!',
+          content: 'Status changed from deactivate to activate.',
+          type: 'orange',
+          typeAnizmated: true})})
+          thisRadio.addClass("status-item--active")
+    }
+    
+  })
+
+  $("#uploadUserForm").submit((e)=>{
+    e.preventDefault();
+    e.stopPropagation();
+    let formData = new FormData();
+    let url = window.location.pathname;
+    let id = url.substring(url.lastIndexOf('/') + 1);
+    formData.append("institute",id);
+    let file = $(".file-input").prop("files")[0]
+    if(file){
+      formData.append("file",file);
+      $.ajax({
+        method:"post",
+        url:"/institute/uploadUser",
+        processData: false,
+        contentType: false,
+        data:formData
+      }).done(()=>{
+        $.alert('User uploaded successfully.');
+        window.location.reload();
+      }).catch((err)=>{
+        console.log(err);
+      })
+    }else{
+      $.alert("Please select a file to import.");
+    }
+    
   })
 
   

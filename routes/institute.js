@@ -21,6 +21,10 @@ router.post("/update",checkSession,instituteController.update);
 
 router.get("/:id",checkSession,instituteController.users)
 
-router.post("/adduser",checkSession,instituteController.addUser)
+router.post("/adduser",checkSession,instituteController.addUser);
+
+router.post("/user/changeStatus",checkSession,instituteController.changeUserStatus);
+
+router.post("/uploadUser",checkSession,instituteController.uploadUser)
 
 module.exports = router;

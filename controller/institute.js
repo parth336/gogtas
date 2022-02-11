@@ -1,5 +1,7 @@
 const instituteModel = require("../modules/institute");
 const usersModel = require("../modules/users");
+const fs = require("fs");
+const csvParser = require("csv-parser");
 
 module.exports = {
     get:async (req, res)=>{
@@ -99,6 +101,47 @@ module.exports = {
         }catch(error){
             console.log(error);
             res.status(500).json({message:"Something went wrong."});
+        }
+    },
+    changeUserStatus: async (req,res)=>{
+        try {
+            let body = req.body;
+            let user = usersModel.chageStatus(body.id,body.status);
+            res.status(200).json({status:true,message:"Status chaged."});
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({status:false,message:"Server error"});
+        }
+    },
+    uploadUser:async (req,res)=>{
+        try {
+            let institute = req.body.institute;
+            let files = req.files;
+            let csv = files.file;
+            let id = new Date().getTime();
+            csv.mv("./assets/temp"+csv.name+id,function (err,data){
+                if(err){
+                    console.log(err);
+                }else{
+                    let results = [];
+                    fs.createReadStream("./assets/temp"+csv.name+id)
+                    .pipe(csvParser())
+                    .on("data",(data)=>{
+                        results.push(data);
+                    }).on("end",async ()=>{
+                        let users = await usersModel.uploadUsers(results,institute);
+                        console.log(users);
+                        fs.rm("./assets/temp"+csv.name+id,(err)=>{
+                            if(err) console.log(err);
+                            res.status(200).json({status:true,message:"Users uploaded successfully"});
+                        });
+                    })
+                }
+            });
+            
+
+        } catch (error) {
+            
         }
     }
     

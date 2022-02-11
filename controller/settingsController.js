@@ -1,6 +1,6 @@
 const admin = require("../modules/admin")
 const passport = require("passport")
-const bcrypt = require("bcrypt")
+const bcrypt = require("bcryptjs")
 
 
 module.exports = {

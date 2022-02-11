@@ -10,6 +10,7 @@ const settingsRouter = require("./routes/settings");
 const apiRouter = require("./routes/api");
 const flash = require("express-flash");
 const passport = require("passport");
+const fileUpload = require("express-fileupload");
 const initializePassport = require("./config/passportConfig");
 
 initializePassport(passport);
@@ -34,6 +35,10 @@ app.use(flash());
 app.use(expressLayouts);
 app.set("layout","./layouts/main");
 app.set("view engine" , "ejs");
+
+app.use(fileUpload({
+    createParentPath: true
+}))
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:false}));
